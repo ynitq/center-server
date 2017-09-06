@@ -64,7 +64,7 @@ export default {
     })
 
     router.beforeEach(function (to, from, next) {
-      if (to.path !== INDEX_PATH && !apiContext.curUser.logined) {
+      if (to.path !== INDEX_PATH && !window.curUser.logined) {
         console.debug('要访问的界面不是登录界面，但是没找到当前用户的信息，导航回到登录界面')
         next(INDEX_PATH)
       } else {

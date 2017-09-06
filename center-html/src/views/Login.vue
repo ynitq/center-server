@@ -52,8 +52,8 @@
 </template>
 
 <script>
-  //  import lzUtil from '../util/lzUtil'
-  //  import apiUrl from '../ApiUrl'
+  import lzUtil from '../util/lzUtil'
+  import apiUrl from '../ApiUrl'
   import apiContext from '../ApiContext'
 
   export default {
@@ -62,8 +62,8 @@
     data () {
       return {
         form: {
-          account: '',
-          password: '',
+          account: 'admin',
+          password: 'linzi777',
           rememberMe: true,
         },
       }
@@ -82,6 +82,7 @@
     /** 每次进入页面时 */
     activated () {
       console.debug('activated()')
+
     },
 
     /** 每次退出页面时 */
@@ -93,10 +94,10 @@
     methods: {
       onSubmit () {
         this.$router.push('Dashboard')
-//        let that = this
-//        lzUtil.ajax(apiUrl.adminLogin.login, this.form, function (res) {
-//          that.afterLogin(res)
-//        })
+        let that = this
+        lzUtil.ajax(apiUrl.public.login, this.form, function (res) {
+          that.afterLogin(res)
+        })
       },
 
       afterLogin (res) {
