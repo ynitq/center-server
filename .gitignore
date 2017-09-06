@@ -44,3 +44,5 @@ mvn-push.gradle
 gradle.properties
 settings.gradle
 
+/center-html/dist
+/java/center-main/codeGen
