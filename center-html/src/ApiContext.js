@@ -4,19 +4,13 @@
  */
 
 export default {
-  /** 当前用户信息 */
-  curUser: {
-    logined: true, // 是否已经登录
-    info: { // 和AdminUserInfoBean 同构
-      account: '',
-      name: '',
-    },
-  },
 
   /** 参数是 AdminUserInfoResponse */
   updateUserInfo (res) {
-    this.curUser.logined = res.logined
-    this.curUser.info = res.info
-    console.debug('更新用户信息', this.curUser)
+    window.curUser.account = res.account
+    window.curUser.name = res.name
+    window.curUser.logined = true
+
+    console.debug('更新用户信息', window.curUser)
   },
 }
