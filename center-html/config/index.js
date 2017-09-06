@@ -1,7 +1,7 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 const path = require('path')
 
-let apiServer = 'http://192.168.2.10:21010/'
+let apiServer = 'http://127.0.0.1:30000/'
 if (process.env.API_SERVER) {
   // 通过环境变量，可以切换后端的地址，例如 API_SERVER=127.0.0.1:20000
   apiServer = 'http://' + process.env.API_SERVER // + '/'
@@ -11,12 +11,10 @@ console.log('ApiServer:', apiServer)
 module.exports = {
   build: {
     env: require('./prod.env'),
-    // index: path.resolve(__dirname, '../../java/src/main/resources/templates/admin/index.ftl'),
-    // assetsRoot: path.resolve(__dirname, '../../java/src/main/resources/static/admin/'),
-    index: path.resolve(__dirname, '../admin/index.html'),
-    assetsRoot: path.resolve(__dirname, '../admin/'),
+    index: path.resolve(__dirname, '../../java/center-main/src/main/resources/templates/index.ftl'),
+    assetsRoot: path.resolve(__dirname, '../../java/center-main/src/main/resources/static/static/'),
     assetsSubDirectory: '',
-    assetsPublicPath: '/admin/', // 发版时，静态文件存放的目录
+    assetsPublicPath: '/static/', // 发版时，静态文件存放的目录
     productionSourceMap: false, // 打开源码模式，方便在正式版中调试
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
@@ -29,7 +27,7 @@ module.exports = {
     assetsPublicPath: '/',
 
     // 本项目是微信公众，因为微信JS SDK 验签时只认80和443端口，所以我们这里只好用80端口，如果不用微信JS SDK，最后不要用80
-    port: 30010,
+    port: 30001,
 
     // 定义开发环境下，那些目录需要交给后端出来
     proxyTable: {
