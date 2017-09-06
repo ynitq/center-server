@@ -4,7 +4,6 @@
  */
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import apiContext from '../ApiContext'
 
 import layers from '../layer/LayerIndex.js'
 
@@ -25,7 +24,8 @@ function getRouteDefine () {
   index.alias = INDEX_PATH
   routers.push(index)
 
-  routers.push(newRoute('Dashboard')) // 仪表盘
+  routers.push(newRoute('Projects')) // 项目列表
+  routers.push(newRoute('Users')) // 用户管理
 
   return routers
 }

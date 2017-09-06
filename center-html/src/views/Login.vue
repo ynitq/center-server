@@ -70,8 +70,7 @@
     },
 
     /** 计算属性 */
-    computed: {
-    },
+    computed: {},
 
     /** 构建页面时 */
     mounted () {
@@ -82,7 +81,9 @@
     /** 每次进入页面时 */
     activated () {
       console.debug('activated()')
-
+      if (window.curUser.logined) {
+        this.$router.push('Projects')
+      }
     },
 
     /** 每次退出页面时 */
@@ -101,9 +102,9 @@
       },
 
       afterLogin (res) {
-        console.debug('系统管理员登录成功', res.info)
+        console.debug('系统管理员登录成功', res)
         apiContext.updateUserInfo(res)
-        this.$router.push('Dashboard')
+        this.$router.push('Projects')
       },
     },
   }

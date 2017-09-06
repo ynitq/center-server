@@ -34,6 +34,7 @@ module.exports = {
       '/api': apiServer, //api请求需要重定向到后端服务器
       '/dict': apiServer, //字典也需要重定向到后端服务器
       '/attachments': apiServer, // 上传的附件
+      '/jmxInWeb': apiServer, // jmx
     },
 
     // 我们现在用less写样式表，为了方便查看，我们需要打开源码模式

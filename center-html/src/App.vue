@@ -1,9 +1,7 @@
 .
 <template>
   <div>
-    <keep-alive>
-      <router-view id="help-router-view"></router-view>
-    </keep-alive>
+    <router-view id="help-router-view"></router-view>
     <!-- 加载提示 -->
     <pre-loading></pre-loading>
 
@@ -14,7 +12,7 @@
   import PreLoading from './layer/PreLoading.vue'
 
   /** 导入样式表 */
-  import 'izitoast/dist/css/iziToast.css'
+  import 'toastr/toastr.less'
   import './assets/iconfont/iconfont.css'
   import './assets/less/app.less'
 

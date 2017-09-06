@@ -44,7 +44,6 @@ module.exports = {
       '@': resolve('src'),
 
       // 一些别名
-      'zepto': 'n-zepto',
       'wx': 'weixin-js-sdk'
     }
   },

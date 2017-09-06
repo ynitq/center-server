@@ -10,7 +10,7 @@ import vueConfig from './config/AppVueConfig.js'
 vueConfig.init()
 
 /** 初始化toast */
-lzUtil.initIziToast()
+lzUtil.initToastr()
 
 const router = routerConfig.initRouter()
 

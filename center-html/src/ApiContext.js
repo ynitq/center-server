@@ -13,4 +13,8 @@ export default {
 
     console.debug('更新用户信息', window.curUser)
   },
+
+  getCurUser () {
+    return window.curUser.account + '(' + window.curUser.name + ')'
+  },
 }

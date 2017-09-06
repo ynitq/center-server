@@ -3,36 +3,28 @@
  */
 
 import $ from 'jquery'
-import iziToast from 'iziToast'
+import toastr from 'toastr'
 
 export default {
   myPreloadTimeOutId: null,
 
   /** 初始化 IziToast 的默认配置 */
-  initIziToast () {
-    iziToast.settings({
-      timeout: 2000,
-      position: 'center',
-      // imageWidth: 50,
-      pauseOnHover: false,
-      resetOnHover: false,
-      close: true,
-      progressBar: false,
-      // layout: 1,
-      // balloon: true,
-      // target: '.target',
-      // icon: 'material-icons',
-      // iconText: 'face',
-      // animateInside: false,
-      // transitionIn: 'flipInX',
-      // transitionOut: 'fadeOutLeft',
-      // rtl: true
-      // titleSize: 20,
-      // titleLineHeight: 20,
-      // messageSize: 20,
-      messageLineHeight: 50,
-    })
-    console.debug('initIziToast() : IziToast初始化完成 ')
+  initToastr () {
+    console.log('初始化 bootstrap-toastr')
+    toastr.options = {
+      'closeButton': true,
+      'debug': false,
+      'positionClass': 'toast-top-right',
+      'onclick': null,
+      'showDuration': '1000',
+      'hideDuration': '1000',
+      'timeOut': '3000',
+      'extendedTimeOut': '1000',
+      'showEasing': 'swing',
+      'hideEasing': 'linear',
+      'showMethod': 'fadeIn',
+      'hideMethod': 'fadeOut',
+    }
   },
 
   /** 判断字符串是否为空 */
@@ -94,24 +86,12 @@ export default {
 
   /** 显示错误信息 */
   showErrorMsg (msg) {
-    // $.toast(msg, 2000, 'toast-error')
-    iziToast.error({
-      message: msg,
-    })
+    toastr.error(msg)
   },
 
   /** 正常的显示信息 */
   showMsg (msg) {
-    /**
-     *  msg{string}: toast内容
-     * duration{number}：toast显示时间,默认2000
-     * extraclass{string}：给toast根节点附加class，高度自定义属性，方便用户自行控制不同场景的样式。
-     * 如果使用了第三个参数，请自行在业务css里添加extraclass对应的样式
-     */
-    // $.toast(msg, 2000, 'toast-success')
-    iziToast.success({
-      message: msg,
-    })
+    toastr.success(msg)
   },
 
   toStr (obj) {
@@ -343,8 +323,8 @@ export default {
 
   /**
    * 格式时间
-   * - Format("yyyy-MM-dd hh:mm:ss.S") ==> 2006-07-02 08:09:04.423
-   * - Format("yyyy-M-d h:m:s.S")      ==> 2006-7-2 8:9:4.18
+   * - Format('yyyy-MM-dd hh:mm:ss.S') ==> 2006-07-02 08:09:04.423
+   * - Format('yyyy-M-d h:m:s.S')      ==> 2006-7-2 8:9:4.18
    * @param date Date对象
    * @param fmt 格式字符串
    * @returns {string}
