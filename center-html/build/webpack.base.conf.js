@@ -1,65 +1,45 @@
 var path = require('path')
-var webpack = require('webpack')
 var utils = require('./utils')
+var webpack = require('webpack')
 var config = require('../config')
+
+var glob = require('glob');
+var entries =  utils.getMultiEntry('./src/'+config.moduleName+'/**/**/*.js'); // 获得入口js文件
+var chunks = Object.keys(entries);
+
+console.log(chunks)
+
+var projectRoot = path.resolve(__dirname, '../')
+const vuxLoader = require('vux-loader')
+
 var vueLoaderConfig = require('./vue-loader.conf')
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
-const buildMode = process.env.NODE_ENV === 'production'
+var webpackConfig = {
 
-module.exports = {
-  entry: {
-    app: './src/main.js'
-  },
-
-  // 配置 chunkFilename 实现懒加载
+  entry:entries,
   output: {
     path: config.build.assetsRoot,
-    filename: buildMode ? '[name].js?[chunkhash]' : '[name].js',
-    chunkFilename: 'chunk[id].js?[chunkhash]',
-    publicPath: buildMode ? config.build.assetsPublicPath : config.dev.assetsPublicPath
+    filename: '[name].js',
+    publicPath: process.env.NODE_ENV === 'production'
+      ? config.build.assetsPublicPath
+      : config.dev.assetsPublicPath
   },
-
-  plugins: [
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery"
-    })
-  ],
-
-  // 设置全局变量,我们在外面用script的方式引用js库后，需要在这说明一下，
-  externals: {
-    'lzDict': 'lzDict',
-    // 'wx': 'wx',
-  },
-
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      // 将常用的控件定义为别名，方便使用
       'vue$': 'vue/dist/vue.esm.js',
       '@': resolve('src'),
-
-      // 一些别名
-      'zepto': 'n-zepto',
-      'wx': 'weixin-js-sdk'
+      'src': path.resolve(__dirname, '../src'),
+      'assets': path.resolve(__dirname, '../src/assets'),
+      'components': path.resolve(__dirname, '../src/components')
     }
   },
-
   module: {
     rules: [
-      {
-        test: /\.(js|vue)$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [resolve('src'), resolve('test')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -73,19 +53,40 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
-        options: {
+        query: {
           limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          name: utils.assetsPath('img/[name].[ext]')
         }
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
         loader: 'url-loader',
-        options: {
+        query: {
           limit: 10000,
-          name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+          name: utils.assetsPath('fonts/[name].[ext]')
         }
       },
+      
     ]
   },
+  plugins: [
+	/*
+    // 提取公共模块
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendors', // 公共模块的名称
+      chunks: chunks,  // chunks是需要提取的模块
+      minChunks: 4 || chunks.length //公共模块被使用的最小次数。比如配置为3，也就是同一个模块只有被3个以外的页面同时引用时才会被提取出来作为common chunks。
+
+    }),*/
+   
+  ]
 }
+
+
+
+module.exports = vuxLoader.merge(webpackConfig, {
+    options: {
+    
+  },	
+  plugins: ['vux-ui', 'progress-bar', 'duplicate-style']
+})

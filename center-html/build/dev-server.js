@@ -25,8 +25,6 @@ var proxyTable = config.dev.proxyTable
 var app = express()
 var compiler = webpack(webpackConfig)
 
-// console.log('webpackConfig配置', webpackConfig)
-
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
   quiet: true
@@ -38,7 +36,7 @@ var hotMiddleware = require('webpack-hot-middleware')(compiler, {
 // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function (compilation) {
   compilation.plugin('html-webpack-plugin-after-emit', function (data, cb) {
-    hotMiddleware.publish({action: 'reload'})
+    hotMiddleware.publish({ action: 'reload' })
     cb()
   })
 })
@@ -47,7 +45,7 @@ compiler.plugin('compilation', function (compilation) {
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]
   if (typeof options === 'string') {
-    options = {target: options}
+    options = { target: options }
   }
   app.use(proxyMiddleware(options.filter || context, options))
 })
@@ -66,28 +64,24 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-var uri = 'http://localhost:' + port
 
-var _resolve
-var readyPromise = new Promise(resolve => {
-  _resolve = resolve
-})
+var uri = 'http://localhost:' + port+'/views/home/list.html'
 
-console.log('> Starting dev server...')
-devMiddleware.waitUntilValid(() => {
+devMiddleware.waitUntilValid(function () {
+  console.log('> 构建完成，已自动在浏览器打开页面，如未自动打开，请手工复制下面的链接，复制到浏览器里打开。')
   console.log('> Listening at ' + uri + '\n')
-  // when env is testing, don't need open it
   if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
     opn(uri)
   }
-  _resolve()
 })
 
-var server = app.listen(port)
-
-module.exports = {
-  ready: readyPromise,
-  close: () => {
-    server.close()
+module.exports = app.listen(port, function (err) {
+  if (err) {
+    console.log(err)
+    return
   }
-}
+  console.log("\n正在构建初始化中，构建完成后，将自动在浏览器打开页面。");	
+  // when env is testing, don't need open it
+
+
+})
