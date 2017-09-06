@@ -1,0 +1,8 @@
+${AnsiColor.BRIGHT_BLUE}
+ 
+ 监控服务器
+ 
+--- 监控服务器：(版本:${project.version}) ---
+Build: ${AnsiColor.RED}UTC 时间 ${timestamp}${AnsiColor.BRIGHT_BLUE}
+版权所有：云南林资科技有限公司 2016
+${AnsiColor.DEFAULT}

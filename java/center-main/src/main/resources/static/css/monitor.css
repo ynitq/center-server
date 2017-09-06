@@ -1,0 +1,170 @@
+body {
+	color: #333;
+	font-family: "微软雅黑", "Microsoft YaHei", "Helvetica Neue", Helvetica,
+		Arial, sans-serif;
+	font-size: 16px;
+	min-width: 1200px;
+}
+
+.line {
+	background-color: #fff;
+	width: 90px;
+	height: 2px;
+	border-top: 1px solid #fff;
+	border-radius: 2px;
+	margin: auto;
+	padding: 0;
+	display: inline-block;
+	zoom: 1;
+}
+
+.title {
+	position: relative;
+	margin: auto;
+	padding: 0;
+	display: inline-block;
+	zoom: 1;
+	font-size: 30px;
+	top: 10px;
+}
+
+.system-name {
+	color: #22ac38;
+	font-size: 24px;
+	margin-right: 24px;
+	padding: 0 10px;
+	text-shadow: 2px 2px 2px #333;
+}
+
+.main-content {
+	min-height: 500px;
+	min-width: 1200px;
+	position: absolute;
+	top: 50px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	padding: 0px;
+	padding: 10px;
+}
+
+.w100 {
+	min-width: 100px;
+}
+
+.required {
+	color: #f00;
+}
+
+/* 左边的地区树 */
+.leftTreeDiv {
+	position: absolute;
+	top: 10px;
+	bottom: 0px;
+	left: 10px;
+	width: 350px;
+}
+
+.leftTreeDiv .list-group {
+	position: absolute;
+	top: 45px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	overflow: auto;
+	padding: 0px;
+}
+
+.leftTreeDiv .projectName {
+	word-break: break-all;
+}
+
+/* 详情区 */
+.detailDiv {
+	position: absolute;
+	top: 10px;
+	bottom: 0px;
+	left: 370px;
+	right: 10px;
+}
+
+.detailDiv .panel-body {
+	position: absolute;
+	top: 55px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	overflow: auto;
+	padding: 0px;
+}
+
+.detailDiv .tab-content {
+	position: absolute;
+	top: 50px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	padding: 0px 15px 15px 15px;
+	overflow: auto;
+}
+
+.detailDiv .row {
+	padding-top: 10px;
+}
+
+.detailDiv .row label {
+	min-width: 120px;
+	text-align: right;
+	padding-right: 10px;
+}
+
+.detailDiv .row h3 {
+	padding-bottom: 5px;
+	border-bottom: 1px solid #eee;
+}
+
+.detailDiv .panel-footer {
+	position: absolute;
+	height: 50px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+.pageTotal {
+	float: right;
+	line-height: 34px;
+}
+
+tr.link {
+	cursor: pointer;
+}
+
+span.item-used {
+	margin: 0px 10px;
+	padding: 5px;
+	background-color: #428bca;
+	color: #fff;
+	border-radius: 4px;
+}
+
+span.item-not-used {
+	margin: 0px 10px;
+	padding: 5px;
+	color: #777;
+}
+
+.group-heading {
+	background-color: #fff;
+	padding: 5px 15px;
+	border-bottom: 1px solid #ddd;
+}
+
+.group-row {
+	margin-left: 20px;
+}
+
+.chart {
+	width: 750px;
+	height: 200px;
+}

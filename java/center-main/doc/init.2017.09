@@ -1,0 +1,153 @@
+/*
+SQLyog v10.2 
+MySQL - 5.7.10 : Database - center_server
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+USE `center_server`;
+
+/*Table structure for table `history` */
+
+DROP TABLE IF EXISTS `history`;
+
+CREATE TABLE `history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL COMMENT 'project外键',
+  `day_key` int(11) NOT NULL DEFAULT '0' COMMENT 'yyyyMMdd 年月日',
+  `hour_key` int(11) NOT NULL DEFAULT '0' COMMENT 'HHmm 时分',
+  `system_load_average` double NOT NULL DEFAULT '0' COMMENT '系统负载',
+  `total_memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '内存已分配总数',
+  `used_memory` bigint(20) NOT NULL DEFAULT '0' COMMENT '内存可使用数',
+  `request_count` int(11) NOT NULL DEFAULT '0' COMMENT '请求数量',
+  `record_time` datetime NOT NULL COMMENT '记录时间',
+  `down` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否宕机',
+  `online_num` int(11) NOT NULL COMMENT '在线人数',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `datetime_key` (`project_id`,`day_key`,`hour_key`),
+  CONSTRAINT `history_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=573 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `msg_log` */
+
+DROP TABLE IF EXISTS `msg_log`;
+
+CREATE TABLE `msg_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL COMMENT '相关项目',
+  `type` int(11) NOT NULL COMMENT '消息类型',
+  `msg` text NOT NULL COMMENT '消息',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  CONSTRAINT `msg_log_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `project` */
+
+DROP TABLE IF EXISTS `project`;
+
+CREATE TABLE `project` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `start_class_name` varchar(100) NOT NULL COMMENT '启动的类名',
+  `port` int(11) NOT NULL COMMENT '服务器监听的端口',
+  `host` varchar(50) NOT NULL COMMENT '服务器IP',
+  `context_path` varchar(50) DEFAULT NULL COMMENT 'contextPath',
+  `display_name` varchar(100) NOT NULL COMMENT '显示的名字',
+  `memo` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_time` datetime NOT NULL,
+  `down` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否宕机了',
+  `send_warn` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否发送报警信息',
+  `has_new_message` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否收到了新信息',
+  `need_check` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否需要检查',
+  `user_ids` varchar(255) DEFAULT NULL COMMENT '关注的用户',
+  `last_check_time` datetime DEFAULT NULL COMMENT '最后检查的时间',
+  `client_info_json` varchar(1024) DEFAULT NULL COMMENT '服务器硬件信息的json',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `CLIENT_ID` (`start_class_name`,`port`,`host`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='记录每个项目';
+
+/*Table structure for table `project_role` */
+
+DROP TABLE IF EXISTS `project_role`;
+
+CREATE TABLE `project_role` (
+  `int` int(11) NOT NULL AUTO_INCREMENT,
+  `project_id` int(11) NOT NULL COMMENT '项目id',
+  `role_id` int(11) NOT NULL COMMENT '角色id',
+  PRIMARY KEY (`int`),
+  UNIQUE KEY `u_project_role` (`project_id`,`role_id`),
+  KEY `project_role_ibfk_2` (`role_id`),
+  CONSTRAINT `project_role_ibfk_1` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `project_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定义这个项目可以由那些角色管理';
+
+/*Table structure for table `rights_def` */
+
+DROP TABLE IF EXISTS `rights_def`;
+
+CREATE TABLE `rights_def` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_name` varchar(50) NOT NULL COMMENT '分类名',
+  `rights_name` varchar(50) NOT NULL COMMENT '权限显示名',
+  `rights_id` varchar(50) NOT NULL COMMENT '权限id',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `rights_id` (`rights_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限定义';
+
+/*Table structure for table `role` */
+
+DROP TABLE IF EXISTS `role`;
+
+CREATE TABLE `role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '角色表',
+  `name` varchar(50) NOT NULL COMMENT '角色名字',
+  `rights` varchar(1000) DEFAULT NULL COMMENT '用逗号分隔的权限id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色';
+
+/*Table structure for table `user` */
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) DEFAULT NULL COMMENT '名字',
+  `phone` varchar(50) DEFAULT NULL COMMENT '电话',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+  `disabled` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否已经封号',
+  `memo` varchar(255) DEFAULT NULL COMMENT '备注',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `super_user` tinyint(1) NOT NULL DEFAULT '0' COMMENT '超级管理员',
+  `account` varchar(50) NOT NULL COMMENT '账号',
+  `password` varchar(100) NOT NULL COMMENT '密码',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `account` (`account`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Table structure for table `user_role` */
+
+DROP TABLE IF EXISTS `user_role`;
+
+CREATE TABLE `user_role` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户-角色',
+  `user_id` int(11) NOT NULL COMMENT '用户id',
+  `role_id` int(11) NOT NULL COMMENT '角色id',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `u_user_role` (`user_id`,`role_id`),
+  KEY `user_role_ibfk_2` (`role_id`),
+  CONSTRAINT `user_role_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `user_role_ibfk_2` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和权限的关系';
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

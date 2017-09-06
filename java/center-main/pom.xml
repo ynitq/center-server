@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- 主项目直接继承 我们自己定义的parent -->
+	<parent>
+	<groupId>com.cfido.center-server</groupId>
+	<artifactId>center-server-root</artifactId>
+	<version>0.9.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>center-main</artifactId>
+
+	<dependencies>
+		<!-- Spring boot 的批量依赖 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+		<!-- /Spring boot 的批量依赖 -->
+
+		<!-- 我们自己的工具包 -->
+		<dependency>
+			<groupId>com.cfido.commons</groupId>
+			<artifactId>spring-support</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.cfido.commons</groupId>
+			<artifactId>code-gen</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<!-- 短信网关 - 253.com -->
+			<groupId>com.liangwj.others</groupId>
+			<artifactId>sms-gw-253</artifactId>
+			<version>0.9.0-SNAPSHOT</version>
+		</dependency>
+
+		<!-- /我们自己的工具包 -->
+
+		<!-- 其他特殊包 -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<!-- /其他特殊包 -->
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- 打jar包的配置 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+
+				<configuration>
+					<!-- 配置文件，静态文件，模板文件 这三类文件需要排除在外 -->
+					<excludes>
+						<exclude>/application*.properties</exclude>
+						<exclude>/templates/**</exclude>
+						<exclude>/static/**</exclude>
+					</excludes>
+
+					<archive>
+						<manifest>
+							<!-- 在manifest中设置Class-Path，并将所有的第三方依赖包的路径放里面 -->
+							<addClasspath>true</addClasspath>
+
+							<!-- 生成的manifest中classpath的前缀，因为要把第三方jar放到lib目录下，所以classpath的前缀是lib/ -->
+							<classpathPrefix>lib/</classpathPrefix>
+
+							<!-- 启动程序 -->
+							<mainClass>com.linzi.monitor.StartMonitorServer</mainClass>
+
+							<!-- 解决SNAPSHOT jar包问题，如果没有这句，会有ClassNotFound的错误 -->
+							<useUniqueVersions>false</useUniqueVersions>
+						</manifest>
+
+						<!-- 我们需要在class-path额外的增加两个目录。conf：配置文件目录，ftl：模板文件目录 -->
+						<manifestEntries>
+							<Class-Path>conf/ ftl/</Class-Path>
+						</manifestEntries>
+
+					</archive>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<!-- 用于拷贝依赖库的插件 -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- 我们将依赖库拷贝到target/lib这个目录下 -->
+							<outputDirectory>${project.build.directory}/lib</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+</project>
