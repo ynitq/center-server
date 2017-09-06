@@ -16,9 +16,9 @@
 <script type="text/javascript">
   window.isDevMode = false
   window.curUser = {
-    account: '$\{account}',
-    name: '$\{name}',
-    logined: $\{logined},
+    account: '${account}',
+    name: '${name}',
+    logined: ${logined},
   }
 </script>
 <!-- htmlmin:ignore -->

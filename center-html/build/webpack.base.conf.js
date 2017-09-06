@@ -52,6 +52,16 @@ module.exports = {
   module: {
     rules: [
       {
+        // 必须配置ftl文件用html-loader来加载，因为默认的loader和ftl有冲突，会其他解释里面的占位符
+        test: /\.ftl$/,
+        use: [ {
+          loader: 'html-loader',
+          options: {
+            minimize: true
+          }
+        }],
+      },
+      {
         test: /\.(js|vue)$/,
         loader: 'eslint-loader',
         enforce: 'pre',
