@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<!-- 主项目直接继承 我们自己定义的parent -->
+	<parent>
+	<groupId>com.cfido.center-server</groupId>
+	<artifactId>center-server-root</artifactId>
+	<version>0.9.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>center-inf</artifactId>
+
+	<dependencies>
+		<!-- 我们自己项目的依赖 -->
+		<dependency>
+			<groupId>com.cfido.commons</groupId>
+			<artifactId>spring-support</artifactId>
+		</dependency>
+		<!-- /我们自己项目的依赖 -->
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>
