@@ -28,7 +28,9 @@ public class IndexController extends BaseAuthedController {
 	@Autowired
 	private UserFactory userFactory;
 
-	@RequestMapping("/")
+	@RequestMapping(path = {
+			"/", "/admin/*"
+	})
 	public String index(Model model) throws InvalidLoginStatusException {
 		String account = "";
 		String name = "";

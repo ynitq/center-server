@@ -23,11 +23,11 @@ abstract class BaseAuthedController extends BaseController {
 	protected void addHeader(Model model) throws InvalidLoginStatusException {
 		WebUser user = this.getCurUser();
 		if (user == null) {
-			throw new InvalidLoginStatusException();
+			// throw new InvalidLoginStatusException();
 		}
 
-		model.addAttribute("user", this.getCurUser());
-		model.addAttribute("menuVo", this.getMenu());
+		// model.addAttribute("user", this.getCurUser());
+		// model.addAttribute("menuVo", this.getMenu());
 	}
 
 	private MenuVo getMenu() throws InvalidLoginStatusException {
