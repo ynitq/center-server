@@ -74,16 +74,13 @@
 
     /** 构建页面时 */
     mounted () {
-      console.debug('mounted()')
-
+      if (window.curUser.logined) {
+        this.$router.push('Projects')
+      }
     },
 
     /** 每次进入页面时 */
     activated () {
-      console.debug('activated()')
-      if (window.curUser.logined) {
-        this.$router.push('Projects')
-      }
     },
 
     /** 每次退出页面时 */

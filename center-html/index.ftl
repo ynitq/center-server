@@ -12,15 +12,16 @@
 </head>
 <body>
 <div id="app"></div>
+<!-- htmlmin:ignore -->
 <script type="text/javascript">
   window.isDevMode = false
   window.curUser = {
-    account: '${account}',
-    name: '${name}',
-    logined: ${logined}, '
+    account: '$\{account}',
+    name: '$\{name}',
+    logined: $\{logined},
   }
-
 </script>
+<!-- htmlmin:ignore -->
 <script type='text/javascript' src='/dict/dictJs.js' charset='utf-8'></script>
 </body>
 </html>
