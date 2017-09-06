@@ -15,10 +15,10 @@ import com.cfido.commons.codeGen.anno.CodeGenEntity;
  */
 @SpringBootApplication
 @CodeGenEntity
-public class CodeGenForMonitorServer {
+public class CodeGenForCenterServer {
 
 	public static void main(String[] args) {
-		SpringApplication.run(CodeGenForMonitorServer.class, args);
+		SpringApplication.run(CodeGenForCenterServer.class, args);
 	}
 
 }
