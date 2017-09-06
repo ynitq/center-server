@@ -12,11 +12,16 @@ import com.cfido.commons.loginCheck.IWebUser;
  */
 public class WebUser implements IWebUser {
 
-	private final UserObj user;
+	private final int userId;
+	private final String account;
+	private final String name;
+	private final String password;
 
 	public WebUser(UserObj user) {
-		super();
-		this.user = user;
+		this.userId = user.getPo().getId();
+		this.account = user.getPo().getAccount();
+		this.name = user.getPo().getName();
+		this.password = user.getPo().getPassword();
 	}
 
 	@Override
@@ -26,15 +31,19 @@ public class WebUser implements IWebUser {
 
 	@Override
 	public String getUsername() {
-		return user.getPo().getAccount();
+		return this.account;
 	}
 
-	public UserObj getUser() {
-		return user;
+	public String getName() {
+		return this.name;
 	}
 
 	@Override
 	public String getPassword() {
-		return user.getPo().getPassword();
+		return this.password;
+	}
+
+	public int getUserId() {
+		return this.userId;
 	}
 }

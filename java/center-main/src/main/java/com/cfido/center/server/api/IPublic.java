@@ -1,5 +1,6 @@
 package com.cfido.center.server.api;
 
+import com.cfido.center.server.api.responses.AdminUserInfoResponse;
 import com.cfido.commons.annotation.api.AClass;
 import com.cfido.commons.annotation.api.AMethod;
 import com.cfido.commons.annotation.bean.AComment;
@@ -20,7 +21,7 @@ import com.cfido.commons.beans.form.LoginForm;
 public interface IPublic {
 
 	@AMethod(comment = "登录")
-	CommonSuccessResponse login(LoginForm form) throws BaseApiException;
+	AdminUserInfoResponse login(LoginForm form) throws BaseApiException;
 
 	@AMethod(comment = "登出")
 	CommonSuccessResponse logout();

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cfido.center.server.api.IPublic;
+import com.cfido.center.server.api.responses.AdminUserInfoResponse;
 import com.cfido.center.server.logicObj.UserFactory;
 import com.cfido.center.server.logicObj.UserObj;
 import com.cfido.center.server.security.WebUser;
@@ -32,7 +33,7 @@ public class PublicImpl extends BaseApiImpl implements IPublic {
 	private UserFactory userFactory;
 
 	@Override
-	public CommonSuccessResponse login(LoginForm form) throws BaseApiException {
+	public AdminUserInfoResponse login(LoginForm form) throws BaseApiException {
 
 		UserObj userObj = this.userFactory.getByAccount(form.getAccount());
 
@@ -46,7 +47,11 @@ public class PublicImpl extends BaseApiImpl implements IPublic {
 		// 顺便将字典管理用户也记录下来
 		this.loginContext.onLoginSuccess(userObj.createDictAdminWebUser(), form.isRememberMe());
 
-		return CommonSuccessResponse.DEFAULT;
+		AdminUserInfoResponse res = new AdminUserInfoResponse();
+		res.setAccount(userObj.getPo().getAccount());
+		res.setName(userObj.getPo().getName());
+
+		return res;
 	}
 
 	@Override
@@ -56,8 +61,7 @@ public class PublicImpl extends BaseApiImpl implements IPublic {
 		WebUser webUser = this.loginContext.getUser(WebUser.class);
 
 		// 重新从数据库中获取用户，防止数据不同步
-		UserObj user = webUser.getUser();
-		this.userFactory.reload(user);
+		UserObj user = this.userFactory.reload(webUser);
 
 		// 校验旧密码
 		user.checkPassword(form.getOldPassword());

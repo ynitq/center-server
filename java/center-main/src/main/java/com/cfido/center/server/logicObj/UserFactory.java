@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import com.cfido.center.server.config.MonitorServerProperties;
 import com.cfido.center.server.entity.User;
 import com.cfido.center.server.generated.UserFactory_CodeGen;
+import com.cfido.center.server.security.WebUser;
 import com.cfido.commons.beans.apiServer.BaseApiException;
 import com.cfido.commons.beans.exceptions.security.UserNotFoundException;
 import com.cfido.commons.utils.utils.LogUtil;
@@ -117,11 +118,8 @@ public class UserFactory extends UserFactory_CodeGen {
 	 * 
 	 * @param obj
 	 */
-	public void reload(UserObj obj) {
-		User po = this.userDomain.get(obj.getPo().getId());
-		if (po != null) {
-			obj.setPo(po);
-		}
+	public UserObj reload(WebUser webUser) {
+		return this.getById(webUser.getUserId());
 	}
 
 }

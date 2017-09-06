@@ -23,7 +23,6 @@ import com.cfido.commons.utils.utils.ConverterUtil;
  * @author 梁韦江 生成于 2016-12-19 17:42:34
  */
 @Controller
-@ANeedCheckLogin(userClass = WebUser.class)
 public class IndexController extends BaseAuthedController {
 
 	@Autowired
@@ -31,6 +30,21 @@ public class IndexController extends BaseAuthedController {
 
 	@RequestMapping("/")
 	public String index(Model model) throws InvalidLoginStatusException {
+		String account = "";
+		String name = "";
+		boolean logined = false;
+
+		WebUser user = this.getCurUser();
+		if (user != null) {
+			account = user.getUsername();
+			name = user.getName();
+			logined = true;
+		}
+
+		model.addAttribute("account", account);
+		model.addAttribute("name", name);
+		model.addAttribute("logined", logined);
+
 		return "index";
 	}
 
@@ -45,6 +59,7 @@ public class IndexController extends BaseAuthedController {
 		return "projects";
 	}
 
+	@ANeedCheckLogin(userClass = WebUser.class)
 	@RequestMapping("/users")
 	public String users(Model model) throws InvalidLoginStatusException {
 		return "users";
