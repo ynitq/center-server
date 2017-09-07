@@ -38,13 +38,9 @@ public class IndexController extends BaseAuthedController {
 
 		WebUser user = this.getCurUser();
 		if (user != null) {
-			account = user.getUsername();
-			name = user.getName();
+			model.addAttribute("user", user);
 			logined = true;
 		}
-
-		model.addAttribute("account", account);
-		model.addAttribute("name", name);
 		model.addAttribute("logined", logined);
 
 		return "index";
