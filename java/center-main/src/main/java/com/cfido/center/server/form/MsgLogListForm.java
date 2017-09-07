@@ -14,7 +14,7 @@ import com.cfido.commons.beans.form.PageForm;
  */
 @AForm
 public class MsgLogListForm extends PageForm {
-	private static final long serialVersionUID = 1L;
+	// private static final long serialVersionUID = 1L;
 
 	// --------------- 属性 ---------------
 	@NotNull
