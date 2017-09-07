@@ -37,11 +37,13 @@ public class HistoryObj extends BasePoObj<History> {
 			// 访问次数时个累加值，需要和旧的相加
 			this.po.setRequestCount(po.getRequestCount() + res.getRequestCount());
 			this.po.setDown(false);
+			this.po.setOnlineNum(res.getOnline());
 		} else {
 			// 如果宕机了，数据清0
 			this.po.setSystemLoadAverage(-1);
 			this.po.setTotalMemory(0);
 			this.po.setUsedMemory(0);
+			this.po.setOnlineNum(0);
 			this.po.setDown(true);
 		}
 	}
