@@ -91,7 +91,7 @@
 							<classpathPrefix>lib/</classpathPrefix>
 
 							<!-- 启动程序 -->
-							<mainClass>com.linzi.monitor.StartMonitorServer</mainClass>
+							<mainClass>com.cfido.center.server.StartCenterServer</mainClass>
 
 							<!-- 解决SNAPSHOT jar包问题，如果没有这句，会有ClassNotFound的错误 -->
 							<useUniqueVersions>false</useUniqueVersions>
