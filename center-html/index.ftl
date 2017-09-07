@@ -15,11 +15,19 @@
 <!-- htmlmin:ignore -->
 <script type="text/javascript">
   window.isDevMode = false
+<#if logined>
   window.curUser = {
-    account: '${account}',
-    name: '${name}',
-    logined: ${logined},
-  }
+      account: '${user.username}',
+      name: '${user.name}',
+      logined: true,
+    }
+<#else>
+  window.curUser = {
+      account: '',
+      name: '',
+      logined: false,
+    }
+</#if>
 </script>
 <!-- htmlmin:ignore -->
 <script type='text/javascript' src='/dict/dictJs.js' charset='utf-8'></script>
