@@ -37,7 +37,7 @@
           <!-- /三个tab标签 -->
 
           <div class="tab-content">
-            <project-info v-if="tabIndex===0"/>
+            <project-info v-if="tabIndex===0" v-on:changed="loadProjects"/>
             <project-chart v-if="tabIndex===1"/>
             <project-msg-list v-if="tabIndex===2"/>
           </div>
@@ -115,6 +115,7 @@
         this.tabIndex = index
       },
 
+      /** 刷新当前激活的tab的内容 */
       reloadTab () {
         if (this.tabIndex === 0) {
           infoModel.reload(this.projectId)

@@ -54,6 +54,28 @@ export default {
     er.needCheck = res.info.po.needCheck
     er.sendWarn = res.info.po.sendWarn
     er.id = res.info.po.id
-
   },
+
+  /** 订阅或者取消订阅 */
+  subscribe: function (userId, subscribed) {
+    let data = this.data
+
+    console.log('用户id=%d, 改变项目id=%d 的状态', userId, data.projectId)
+
+    let param = {
+      id: data.projectId,
+      userId: userId,
+    }
+
+    lzUtil.ajax(apiUrl.project.userSubscribe, param, function (res) {
+      data.userSubscribe = res.userSubscribe
+
+      if (subscribed) {
+        lzUtil.showMsg('已取消订阅')
+      } else {
+        lzUtil.showMsg('订阅成功')
+      }
+    })
+  },
+
 }

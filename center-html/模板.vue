@@ -1,12 +1,6 @@
 <template>
   <div>
-    <header class="bar bar-nav">
-      <h1 class='title'>标题</h1>
-    </header>
-
-    <div class="content">
       内容
-    </div>
   </div>
 </template>
 

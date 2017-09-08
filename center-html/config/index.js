@@ -6,7 +6,7 @@ if (process.env.API_SERVER) {
   // 通过环境变量，可以切换后端的地址，例如 API_SERVER=127.0.0.1:20000
   apiServer = 'http://' + process.env.API_SERVER // + '/'
 }
-console.log('ApiServer:', apiServer)
+console.log('后端java服务器地址:', apiServer)
 
 module.exports = {
   build: {

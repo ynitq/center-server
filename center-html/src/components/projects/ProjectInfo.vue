@@ -79,7 +79,7 @@
     <hr/>
     <div class="row">
       <div class="col-md-8">
-        <form id="project_edit_form" role="form" class="form-horizontal">
+        <form role="form" class="form-horizontal" v-on:submit.prevent="saveInfo">
           <input type="hidden" name="id" v-model="editForm.id"/>
           <div class="form-group">
             <!---->
@@ -123,7 +123,7 @@
         <div class="panel panel-default">
           <div class="panel-heading">关注的用户</div>
           <div class="list-group">
-            <a v-for="row in userSubscribe" href="javascript::" @click="subscribe(row.po.id, row.subscribed)" class="list-group-item"> {{row.po.name}}
+            <a v-for="row in userSubscribe" @click="subscribe(row.po.id, row.subscribed)" class="list-group-item"> {{row.po.name}}
               <span v-if="row.subscribed" class="label label-success pull-right">已关注</span>
               <span v-else class="label label-default pull-right">未关注</span>
             </a>
@@ -138,6 +138,8 @@
 <script>
 
   import infoModel from './ProjectInfoModel'
+  import lzUtil from '../../util/lzUtil'
+  import apiUrl from '../../ApiUrl'
 
   export default {
     name: 'project-info', // 只有是组件的时候才有用
@@ -153,27 +155,27 @@
     /** 计算属性 */
     computed: {},
 
-    /** 构建页面时 */
-    mounted () {
-      console.debug('mounted()', this.projectId)
-    },
-
-    /** 每次进入页面时 */
-    activated () {
-      console.debug('activated()', this.projectId)
-    },
-
-    /** 每次退出页面时 */
-    deactivated () {
-      console.debug('deactivated()')
-    },
-
     /** 本页面可用的方法 */
-    methods: {},
+    methods: {
+      /** 订阅或者取消订阅 */
+      subscribe: function (userId, subscribed) {
+        infoModel.subscribe(userId, subscribed)
+      },
+
+      /** 保存表单 */
+      saveInfo () {
+        let that = this
+        lzUtil.ajax(apiUrl.project.save, this.editForm, function (res) {
+          that.saveInfoCallBack(res)
+        })
+      },
+
+      /** 保存表单 cb */
+      saveInfoCallBack (res) {
+        lzUtil.showMsg('保存成功')
+
+        this.$emit('changed')
+      },
+    },
   }
 </script>
-
-<!--<style scoped>-->
-<style>
-
-</style>
