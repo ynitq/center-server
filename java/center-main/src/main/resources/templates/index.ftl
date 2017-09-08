@@ -11,4 +11,4 @@
       name: '',
       logined: false,
     }
-</#if></script><script src=/dict/dictJs.js charset=utf-8></script><script type=text/javascript src=/static/js/manifest.6b6cd3dd9d4ed14c685b.js></script><script type=text/javascript src=/static/js/vendor.73b9b44d80bc696af35a.js></script><script type=text/javascript src=/static/js/app.8af5208ca33b09dbc5ab.js></script></body></html>
+</#if></script><script src=/dict/dictJs.js charset=utf-8></script><script type=text/javascript src=/static/js/manifest.433690b4c198d5ae3347.js></script><script type=text/javascript src=/static/js/vendor.73b9b44d80bc696af35a.js></script><script type=text/javascript src=/static/js/app.30050b9c4353489b7bb9.js></script></body></html>
