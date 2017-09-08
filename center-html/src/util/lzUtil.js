@@ -367,5 +367,116 @@ export default {
     return false
   },
 
+  /**
+   * 弹出确认框
+   *
+   * @param title
+   *            标题
+   * @param msg
+   *            消息
+   * @param onOk
+   *            点击确认是的回调函数
+   * @param onCancel
+   *            点击取消时的回调函数
+   */
+  confirm: function (title, msg, onOk, onCancel) {
+    // 避免缓存，每次都清空
+    var htmlId = 'lzUtilConfirmModal'
+    var jqueryId = '#' + htmlId
+
+    var ui = $(jqueryId)
+    if (ui.length === 0) {
+      // 如果这个id的模式窗不存在，就创建
+
+      var html = `
+        <div id="lzUtilConfirmModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="lzUtilConfirmModal_label">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                  <h4 class="modal-title" id="lzUtilConfirmModal_label"></h4>
+              </div>
+              <div class="modal-body">
+                <p id="lzUtilConfirmModal_body"></p>
+              </div>
+              <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-primary js_ok">确定</button>
+                <button data-dismiss="modal" class="btn btn-default">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>`
+
+      ui = $(html)
+      $(document.body).append(ui)
+    }
+
+    $('#lzUtilConfirmModal_label').text(title)
+    $('#lzUtilConfirmModal_body').text(msg)
+
+    // 添加ok的回调函数到按钮上
+    let okBtn = $(ui.find('.js_ok')[0])
+    okBtn.unbind()// 重新绑定click之前，需要取消原来的所有绑定
+    okBtn.click(function () {
+      try {
+        if (onOk) {
+          onOk()
+        }
+      } catch (e) {
+        console.log('出错了:' + e)
+      }
+
+      ui.modal('hide')
+
+    })
+
+    // 添加cancel回调函数到事件上
+    ui.on('hide.bs.modal', function () {
+      if (onCancel) {
+        onCancel()
+      }
+    })
+
+    ui.modal('show')
+  },
+
+  /**
+   * 模态框的 Alert
+   *
+   * @param msg
+   */
+  alert: function (msg) {
+    // 避免缓存，每次都清空
+    let jqueryId = '#lzUtilAlertModal'
+
+    console.log('lzUtil.alert msg=' + msg)
+    // 避免缓存，如果这个id的模式窗已经存在，则删除
+    let obj = $(jqueryId)
+    if (obj === null || obj.length === 0) {
+      var html = `
+      <div id="lzUtilAlertModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+              <h4 class="modal-title" id="myModalLabel2">系统提示</h4>
+            </div>
+          <div class="modal-body">
+            <p id="lzUtilAlertModal_body"></p>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-primary">确定</button>
+          </div>
+        </div>
+      </div>
+    </div>`
+
+      obj = $(html)
+      $(document.body).append(obj)
+    }
+
+    $('#lzUtilAlertModal_body').text(msg)
+    obj.modal('show')
+  },
 }
 
