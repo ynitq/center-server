@@ -12,7 +12,7 @@ import com.cfido.center.server.logicObj.UserFactory;
 import com.cfido.center.server.logicObj.UserViewModel;
 import com.cfido.center.server.security.WebUser;
 import com.cfido.commons.beans.apiExceptions.InvalidLoginStatusException;
-import com.cfido.commons.loginCheck.ANeedCheckLogin;
+import com.cfido.commons.spring.security.LoginContext;
 import com.cfido.commons.utils.utils.ConverterUtil;
 
 /**
@@ -23,7 +23,10 @@ import com.cfido.commons.utils.utils.ConverterUtil;
  * @author 梁韦江 生成于 2016-12-19 17:42:34
  */
 @Controller
-public class IndexController extends BaseAuthedController {
+public class IndexController {
+
+	@Autowired
+	private LoginContext loginContext;
 
 	@Autowired
 	private UserFactory userFactory;
@@ -32,11 +35,9 @@ public class IndexController extends BaseAuthedController {
 			"/", "/admin/*"
 	})
 	public String index(Model model) throws InvalidLoginStatusException {
-		String account = "";
-		String name = "";
 		boolean logined = false;
 
-		WebUser user = this.getCurUser();
+		WebUser user = this.loginContext.getUser(WebUser.class);
 		if (user != null) {
 			model.addAttribute("user", user);
 			logined = true;
@@ -55,11 +56,5 @@ public class IndexController extends BaseAuthedController {
 		model.addAttribute("userList", list);
 
 		return "projects";
-	}
-
-	@ANeedCheckLogin(userClass = WebUser.class)
-	@RequestMapping("/users")
-	public String users(Model model) throws InvalidLoginStatusException {
-		return "users";
 	}
 }

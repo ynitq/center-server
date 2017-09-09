@@ -22,7 +22,9 @@ import com.cfido.center.server.service.MonitorServerContext;
 import com.cfido.commons.beans.apiServer.BaseApiException;
 import com.cfido.commons.beans.apiServer.impl.CommonSuccessResponse;
 import com.cfido.commons.beans.exceptions.security.PermissionDeniedException;
+import com.cfido.commons.beans.monitor.ClientGetUserForm;
 import com.cfido.commons.beans.monitor.ClientMsgForm;
+import com.cfido.commons.beans.monitor.UserInfoInCenterBean;
 import com.cfido.commons.spring.monitor.MonitorUrls;
 
 /**
@@ -45,6 +47,12 @@ public class MonitorServerController {
 
 	@Autowired
 	private HttpServletRequest request;
+
+	@ResponseBody
+	@RequestMapping(value = MonitorUrls.SERVER_USER, method = RequestMethod.POST)
+	public UserInfoInCenterBean getUserInfo(ClientGetUserForm form) {
+		return this.monitorServerContext.getUserInfo(form);
+	}
 
 	@ResponseBody
 	@RequestMapping(value = MonitorUrls.SERVER_REPORT, method = RequestMethod.POST)

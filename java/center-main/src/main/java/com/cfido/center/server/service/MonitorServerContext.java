@@ -21,10 +21,15 @@ import com.cfido.center.server.config.MonitorMBeanDomainNaming;
 import com.cfido.center.server.config.MonitorServerProperties;
 import com.cfido.center.server.logicObj.ProjectFactory;
 import com.cfido.center.server.logicObj.ProjectObj;
+import com.cfido.center.server.logicObj.UserFactory;
+import com.cfido.center.server.logicObj.UserObj;
 import com.cfido.commons.beans.apiServer.BaseApiException;
+import com.cfido.commons.beans.exceptions.security.UserNotFoundException;
+import com.cfido.commons.beans.monitor.ClientGetUserForm;
 import com.cfido.commons.beans.monitor.ClientIdBean;
 import com.cfido.commons.beans.monitor.ClientInfoResponse;
 import com.cfido.commons.beans.monitor.ClientMsgForm;
+import com.cfido.commons.beans.monitor.UserInfoInCenterBean;
 import com.cfido.commons.spring.jmxInWeb.ADomainOrder;
 import com.cfido.commons.utils.threadPool.IMyTask;
 import com.cfido.commons.utils.utils.DateUtil;
@@ -52,6 +57,9 @@ public class MonitorServerContext {
 
 	@Autowired
 	private MonitorThreadPool threadPool;
+
+	@Autowired
+	private UserFactory userFactory;
 
 	private long lastSaveTime = 0;
 	private long saveCount = 0;
@@ -83,6 +91,48 @@ public class MonitorServerContext {
 
 		// 增加系统消息
 		this.asyncAddMsgLog(obj, form.getMsgType(), form.getMsg());
+	}
+
+	public UserInfoInCenterBean getUserInfo(ClientGetUserForm form) {
+		if (StringUtils.isEmpty(form.getAccount())) {
+			return null;
+		}
+
+		try {
+			UserInfoInCenterBean bean = new UserInfoInCenterBean();
+			UserObj user = this.userFactory.getByAccount(form.getAccount());
+
+			// 基础信息
+			bean.setAccount(user.getPo().getAccount());
+			bean.setEncodedPassword(user.getPo().getPassword());
+			bean.setName(user.getPo().getName());
+			bean.setSuperuser(user.getPo().isSuperUser());
+
+			// 额外信息
+			bean.addExInfo("phone", user.getPo().getPhone());
+			bean.addExInfo("email", user.getPo().getEmail());
+
+			try {
+				if (StringUtils.hasText(form.getIdStr())) {
+					ClientIdBean idBean = JSON.parseObject(form.getIdStr(), ClientIdBean.class);
+
+					ProjectObj obj = this.projectFactory.getObjByIdBean(idBean);
+					String rightsId = obj.getPo().getRightsId();
+
+					// TODO 中心服务器需要返回权限
+					log.debug("获取中心用户 {}, 用户存在，需要的权限id为:{}", form.getAccount(), rightsId);
+
+				}
+			} catch (BaseApiException e) {
+			}
+
+			return bean;
+
+		} catch (UserNotFoundException e) {
+			log.debug("获取中心用户 {}, 但用户不存在", form.getAccount());
+		}
+
+		return null;
 	}
 
 	/**
