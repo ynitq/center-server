@@ -128,8 +128,7 @@ public class ProjectFactory extends ProjectFactory_CodeGen {
 
 	@Override
 	public void delete(ProjectObj obj) throws BaseApiException {
-		// TODO 需要人工干预是否真的从数据库中删除
-		// super.delete(obj);
+		super.delete(obj);
 	}
 
 }

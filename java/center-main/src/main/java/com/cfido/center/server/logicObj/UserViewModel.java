@@ -1,6 +1,14 @@
 package com.cfido.center.server.logicObj;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import com.cfido.center.server.api.responses.beans.UserRoleInfoBean;
+import com.cfido.center.server.entity.Role;
 import com.cfido.center.server.entity.User;
+import com.cfido.center.server.entity.UserRole;
 import com.cfido.commons.utils.logicObj.BaseViewModel;
 import com.cfido.commons.utils.utils.DateUtil;
 
@@ -15,11 +23,34 @@ import com.cfido.commons.utils.utils.DateUtil;
  */
 public class UserViewModel extends BaseViewModel<UserObj, User> {
 
+	private final List<UserRoleInfoBean> userRoles = new LinkedList<>();
+
 	public UserViewModel(UserObj obj) {
 		super(obj);
 	}
 
 	public String getCreateTime() {
 		return DateUtil.dateFormat(po.getCreateTime());
+	}
+
+	public List<UserRoleInfoBean> getUserRoles() {
+		return userRoles;
+	}
+
+	/** 更新用户所属的角色 */
+	public void updateUserRoles(List<Role> allRoles, List<UserRole> allUserRole) {
+		this.userRoles.clear();
+
+		Set<Integer> roleIdSet = new HashSet<>();
+		for (UserRole userRolePo : allUserRole) {
+			roleIdSet.add(userRolePo.getRoleId());
+		}
+
+		for (Role rolePo : allRoles) {
+			UserRoleInfoBean bean = new UserRoleInfoBean(rolePo);
+			this.userRoles.add(bean);
+
+			bean.setInRole(roleIdSet.contains(rolePo.getId()));
+		}
 	}
 }

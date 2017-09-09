@@ -1,19 +1,17 @@
 package com.cfido.center.server.logicObj;
 
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import com.alibaba.fastjson.JSON;
+import com.cfido.center.server.domains.RightsDefDomain;
+import com.cfido.center.server.entity.RightsDef;
 import com.cfido.commons.beans.apiServer.BaseApiException;
+import com.cfido.commons.beans.monitor.ServerRightsBean;
 import com.cfido.commons.beans.others.IConverter;
 import com.cfido.commons.utils.db.IObjFactoryDao;
 import com.cfido.commons.utils.logicObj.BaseObjFactory;
-
-
-import com.cfido.center.server.entity.RightsDef;
-
-import com.cfido.center.server.logicObj.RightsDefObj;
-import com.cfido.center.server.logicObj.RightsDefViewModel;
-import com.cfido.center.server.domains.RightsDefDomain;
 
 /**
  * <pre>
@@ -49,16 +47,29 @@ public class RightsDefFactory extends BaseObjFactory<RightsDefObj, RightsDef, In
 
 	public RightsDef createDefaultPo() {
 		RightsDef po = new RightsDef();
-
-		// TODO 创建新的RightsDef时，设置默认值
-
 		return po;
 	}
 
 	@Override
 	public void delete(RightsDefObj obj) throws BaseApiException {
-		// TODO 删除RightsDef时，需要人工判断是否真的从数据库中删除
 		super.delete(obj);
+	}
+
+	/** 增加或者保存权限定义 */
+	public void addRihgtsDef(ServerRightsBean bean) throws BaseApiException {
+		Assert.notNull(bean, "权限bean不能为空");
+		Assert.hasText(bean.getId(), "必须有权限id");
+
+		RightsDef po = this.rightsDefDomain.findByRights(bean.getId());
+		if (po == null) {
+			po = this.createDefaultPo();
+			po.setRightsId(bean.getId());
+			po.setJsonText(JSON.toJSONString(bean));
+			this.rightsDefDomain.insert(po);
+		} else {
+			po.setJsonText(JSON.toJSONString(bean));
+			this.rightsDefDomain.update(po, false);
+		}
 	}
 
 }

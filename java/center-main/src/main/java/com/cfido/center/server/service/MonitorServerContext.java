@@ -21,6 +21,7 @@ import com.cfido.center.server.config.MonitorMBeanDomainNaming;
 import com.cfido.center.server.config.MonitorServerProperties;
 import com.cfido.center.server.logicObj.ProjectFactory;
 import com.cfido.center.server.logicObj.ProjectObj;
+import com.cfido.center.server.logicObj.RightsDefFactory;
 import com.cfido.center.server.logicObj.UserFactory;
 import com.cfido.center.server.logicObj.UserObj;
 import com.cfido.commons.beans.apiServer.BaseApiException;
@@ -29,6 +30,7 @@ import com.cfido.commons.beans.monitor.ClientGetUserForm;
 import com.cfido.commons.beans.monitor.ClientIdBean;
 import com.cfido.commons.beans.monitor.ClientInfoResponse;
 import com.cfido.commons.beans.monitor.ClientMsgForm;
+import com.cfido.commons.beans.monitor.ServerRightsBean;
 import com.cfido.commons.beans.monitor.UserInfoInCenterBean;
 import com.cfido.commons.spring.jmxInWeb.ADomainOrder;
 import com.cfido.commons.utils.threadPool.IMyTask;
@@ -61,6 +63,9 @@ public class MonitorServerContext {
 	@Autowired
 	private UserFactory userFactory;
 
+	@Autowired
+	private RightsDefFactory rightsDefFactory;
+
 	private long lastSaveTime = 0;
 	private long saveCount = 0;
 
@@ -89,7 +94,26 @@ public class MonitorServerContext {
 			}
 		}
 
-		// 增加系统消息
+		if (StringUtils.hasText(form.getRightStr())) {
+			// 如果客户端有传入权限字符串，就需要保存
+
+			ServerRightsBean bean = JSON.parseObject(form.getRightStr(), ServerRightsBean.class);
+			if (StringUtils.hasText(bean.getId())) {
+
+				log.debug("项目:{} 有权限定义，需要保存到数据库. {}", obj.getPo().getId(), form.getRightStr());
+
+				// 如果有权限定义传过来，就将权限定义和项目关联一下
+				obj.getPo().setRightsId(bean.getId());
+
+				// 保存项目
+				obj.asyncSave();
+
+				// 将权限定义保存下来
+				this.rightsDefFactory.addRihgtsDef(bean);
+			}
+		}
+
+		// 增加系统消息, 消息为空时，不保存到msg_log表
 		this.asyncAddMsgLog(obj, form.getMsgType(), form.getMsg());
 	}
 

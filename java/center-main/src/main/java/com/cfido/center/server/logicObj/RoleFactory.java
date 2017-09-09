@@ -1,19 +1,14 @@
 package com.cfido.center.server.logicObj;
 
-import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import com.cfido.center.server.domains.RoleDomain;
+import com.cfido.center.server.entity.Role;
 import com.cfido.commons.beans.apiServer.BaseApiException;
 import com.cfido.commons.beans.others.IConverter;
 import com.cfido.commons.utils.db.IObjFactoryDao;
 import com.cfido.commons.utils.logicObj.BaseObjFactory;
-
-
-import com.cfido.center.server.entity.Role;
-
-import com.cfido.center.server.logicObj.RoleObj;
-import com.cfido.center.server.logicObj.RoleViewModel;
-import com.cfido.center.server.domains.RoleDomain;
 
 /**
  * <pre>
@@ -49,15 +44,11 @@ public class RoleFactory extends BaseObjFactory<RoleObj, Role, Integer> {
 
 	public Role createDefaultPo() {
 		Role po = new Role();
-
-		// TODO 创建新的Role时，设置默认值
-
 		return po;
 	}
 
 	@Override
 	public void delete(RoleObj obj) throws BaseApiException {
-		// TODO 删除Role时，需要人工判断是否真的从数据库中删除
 		super.delete(obj);
 	}
 

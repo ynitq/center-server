@@ -46,7 +46,6 @@ public class UserFactory extends UserFactory_CodeGen {
 
 	@Override
 	public void delete(UserObj obj) throws BaseApiException {
-		// TODO 需要人工干预是否真的从数据库中删除
 		super.delete(obj);
 	}
 
