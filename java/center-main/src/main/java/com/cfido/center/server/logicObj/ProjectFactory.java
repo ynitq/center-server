@@ -32,7 +32,10 @@ public class ProjectFactory extends ProjectFactory_CodeGen {
 	private final Map<Integer, ProjectObj> idMap = new HashMap<>();
 
 	@PostConstruct
-	protected void init() throws BaseApiException {
+	public void init() throws BaseApiException {
+		this.objMap.clear();
+		this.idMap.clear();
+
 		List<Project> poList = projectDomain.findAll();
 		for (Project po : poList) {
 			String key = this.getKeyFromPo(po);

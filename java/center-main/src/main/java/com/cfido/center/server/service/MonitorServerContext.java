@@ -269,6 +269,11 @@ public class MonitorServerContext {
 
 	}
 
+	@ManagedOperation(description = "从数据库中重新加载所有内容")
+	public void reloadProjectsFromDb() throws BaseApiException {
+		this.projectFactory.init();
+	}
+
 	@ManagedOperation(description = "测试检查所有项目")
 	public void jmxTestLoopCheck() {
 		this.loopForCheck();
