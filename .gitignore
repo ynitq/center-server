@@ -47,3 +47,4 @@ settings.gradle
 /center-html/dist
 /java/center-main/codeGen
 /java/center-main/logs
+/java/center-main/dict
