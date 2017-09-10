@@ -107,6 +107,7 @@
         menus: [
           {name: '项目查看', path: 'Projects'},
           {name: '用户管理', path: 'Users'},
+          {name: '角色管理', path: 'Roles'},
         ],
 
         username: '', // 用户名
@@ -127,17 +128,10 @@
     /** 构建页面时 */
     mounted () {
       this.username = apiContext.getCurUser()
-      console.debug('当前用户', this.username)
-
     },
 
     /** 每次进入页面时 */
     activated () {
-    },
-
-    /** 每次退出页面时 */
-    deactivated () {
-      console.debug('activated()')
     },
 
     /** 本页面可用的方法 */

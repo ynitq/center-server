@@ -29,6 +29,13 @@ export default {
     login: '/api/public/login', //  登录
     logout: '/api/public/logout', //  登出
   },
+  /** 监控-角色 */
+  role: {
+    delete: '/api/role/delete', //  删除
+    list: '/api/role/list', //  列表
+    save: '/api/role/save', //  保存
+    view: '/api/role/view', //  查看
+  },
   /** 监控-用户管理 */
   user: {
     delete: '/api/user/delete', //  删除

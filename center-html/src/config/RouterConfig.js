@@ -26,6 +26,7 @@ function getRouteDefine () {
 
   routers.push(newRoute('Projects')) // 项目列表
   routers.push(newRoute('Users')) // 用户管理
+  routers.push(newRoute('Roles')) // 角色管理
 
   return routers
 }
