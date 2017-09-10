@@ -62,8 +62,8 @@
     data () {
       return {
         form: {
-          account: 'admin',
-          password: 'linzi777',
+          account: '',
+          password: '',
           rememberMe: true,
         },
       }
@@ -76,6 +76,12 @@
     mounted () {
       if (window.curUser.logined) {
         this.$router.push('Projects')
+      }
+
+      if (window.defaultLogin) {
+        // 开发环境下，自动填写账号和密码
+        this.form.account = window.defaultLogin.account
+        this.form.password = window.defaultLogin.password
       }
     },
 
