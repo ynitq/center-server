@@ -29,7 +29,6 @@
                 <li role="separator" class="divider"></li>
                 <li><a href="/dict/manager" target="_blank">页面字典</a></li>
                 <li><a href="/jmxInWeb/" target="_blank">JMX</a></li>
-
               </ul>
             </li>
           </ul>
