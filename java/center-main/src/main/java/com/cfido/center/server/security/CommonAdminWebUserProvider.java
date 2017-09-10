@@ -21,7 +21,7 @@ import com.cfido.commons.spring.security.LoginCheckInterceptor;
  * @author 梁韦江 生成于 2016-12-19 17:42:35
  */
 @Service
-public class DictAdminUserDetailService implements IUserServiceForRememberMe {
+public class CommonAdminWebUserProvider implements IUserServiceForRememberMe {
 
 	@Autowired
 	private UserFactory userFactory;
@@ -31,7 +31,7 @@ public class DictAdminUserDetailService implements IUserServiceForRememberMe {
 
 		try {
 			UserObj user = this.userFactory.getByAccount(username);
-			return user.createDictAdminWebUser();
+			return user.createCommonAdminWebUser();
 		} catch (UserNotFoundException e) {
 			return null;
 		}

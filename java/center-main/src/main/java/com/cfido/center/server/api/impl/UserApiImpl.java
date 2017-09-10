@@ -16,6 +16,7 @@ import com.cfido.center.server.logicObj.UserObj;
 import com.cfido.center.server.logicObj.UserViewModel;
 import com.cfido.center.server.security.WebUser;
 import com.cfido.commons.annotation.api.AApiServerImpl;
+import com.cfido.commons.beans.apiExceptions.InvalidLoginStatusException;
 import com.cfido.commons.beans.apiExceptions.UserAlreadyRegistedException;
 import com.cfido.commons.beans.apiServer.BaseApiException;
 import com.cfido.commons.beans.apiServer.impl.CommonSuccessResponse;
@@ -23,6 +24,7 @@ import com.cfido.commons.beans.exceptions.security.UserNotFoundException;
 import com.cfido.commons.beans.form.IdForm;
 import com.cfido.commons.beans.form.ResetPasswordForm;
 import com.cfido.commons.loginCheck.ANeedCheckLogin;
+import com.cfido.commons.spring.security.CommonAdminWebUser;
 import com.cfido.commons.utils.utils.ConverterUtil;
 import com.cfido.commons.utils.utils.ExceptionUtil;
 import com.cfido.commons.utils.utils.PasswordEncoder;
@@ -164,14 +166,15 @@ public class UserApiImpl extends BaseApiImpl implements IUserApi {
 
 	}
 
-	protected void tranFormDataToPo(UserEditForm form, User po, boolean isUpdate) {
+	protected void tranFormDataToPo(UserEditForm form, User po, boolean isUpdate) throws InvalidLoginStatusException {
 		// 需要人工将表单的数据转到po中，请注意数据安全
 		po.setName(form.getName());
 		po.setPhone(form.getPhone());
 		po.setEmail(form.getEmail());
 		po.setMemo(form.getMemo());
 
-		if (StringUtils.hasText(form.getPassword())) {
+		CommonAdminWebUser curUser = this.getCurUserNotNull();
+		if (curUser.isSuperUser() && !curUser.getUsername().equals(po.getAccount()) && StringUtils.hasText(form.getPassword())) {
 			// 密码不为空时，就设置新密码，密码非空判断在insert方法中
 			po.setPassword(PasswordEncoder.encodePassword(form.getPassword()));
 		}

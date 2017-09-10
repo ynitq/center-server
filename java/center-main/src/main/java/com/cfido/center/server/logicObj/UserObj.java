@@ -36,11 +36,11 @@ public class UserObj extends BasePoObj<User> {
 	}
 
 	/**
-	 * 使用该用户创建字典管理员
+	 * 使用该用户通用管理员
 	 * 
 	 * @return
 	 */
-	public CommonAdminWebUser createDictAdminWebUser() {
+	public CommonAdminWebUser createCommonAdminWebUser() {
 		return new CommonAdminWebUser(po.getAccount(), po.getPassword());
 	}
 

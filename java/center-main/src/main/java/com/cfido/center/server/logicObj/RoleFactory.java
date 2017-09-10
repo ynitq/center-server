@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cfido.center.server.domains.RoleDomain;
+import com.cfido.center.server.domains.UserRoleDomain;
 import com.cfido.center.server.entity.Role;
 import com.cfido.commons.beans.apiServer.BaseApiException;
 import com.cfido.commons.beans.others.IConverter;
@@ -30,6 +31,9 @@ public class RoleFactory extends BaseObjFactory<RoleObj, Role, Integer> {
 	@Autowired
 	protected RoleDomain roleDomain;
 
+	@Autowired
+	protected UserRoleDomain userRoleDomain;
+
 	@Override
 	protected IObjFactoryDao<Role, Integer> getDaoForObjFactory() {
 		return roleDomain;
@@ -49,6 +53,10 @@ public class RoleFactory extends BaseObjFactory<RoleObj, Role, Integer> {
 
 	@Override
 	public void delete(RoleObj obj) throws BaseApiException {
+		// 需要先删除关联表中的数据
+		this.userRoleDomain.deleteByRoleId(obj.getPo().getId());
+
+		// 然后再删除本身
 		super.delete(obj);
 	}
 

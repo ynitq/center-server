@@ -45,7 +45,7 @@ public class PublicImpl extends BaseApiImpl implements IPublic {
 		this.loginContext.onLoginSuccess(user, form.isRememberMe());
 
 		// 顺便将字典管理用户也记录下来
-		this.loginContext.onLoginSuccess(userObj.createDictAdminWebUser(), form.isRememberMe());
+		this.loginContext.onLoginSuccess(userObj.createCommonAdminWebUser(), form.isRememberMe());
 
 		AdminUserInfoResponse res = new AdminUserInfoResponse();
 		res.setAccount(userObj.getPo().getAccount());
