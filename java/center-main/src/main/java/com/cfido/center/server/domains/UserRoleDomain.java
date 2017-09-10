@@ -26,6 +26,11 @@ public class UserRoleDomain extends BaseDomainWithCache<UserRole, Integer> {
 		return this.commonDao;
 	}
 
+	public UserRole getByUserIdAndRoleId(int userId, int roleId) {
+		String sql = "from UserRole where userId=?1 and roleId=?2";
+		return this.findOne(sql, userId, roleId);
+	}
+
 	public List<UserRole> findByRoleId(int roleId) {
 		String sql = "from UserRole where roleId=?1";
 		List<UserRole> list = this.find(sql, roleId);

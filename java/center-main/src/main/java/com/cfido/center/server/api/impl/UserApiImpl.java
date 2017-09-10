@@ -8,9 +8,13 @@ import org.springframework.util.StringUtils;
 
 import com.cfido.center.server.api.IUserApi;
 import com.cfido.center.server.api.responses.UserListResponse;
+import com.cfido.center.server.api.responses.UserRoleUpdateResponse;
 import com.cfido.center.server.api.responses.UserViewResponse;
 import com.cfido.center.server.entity.User;
+import com.cfido.center.server.form.RoleAndUserIdForm;
 import com.cfido.center.server.form.UserEditForm;
+import com.cfido.center.server.logicObj.RoleFactory;
+import com.cfido.center.server.logicObj.RoleObj;
 import com.cfido.center.server.logicObj.UserFactory;
 import com.cfido.center.server.logicObj.UserObj;
 import com.cfido.center.server.logicObj.UserViewModel;
@@ -44,7 +48,10 @@ public class UserApiImpl extends BaseApiImpl implements IUserApi {
 	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(UserApiImpl.class);
 
 	@Autowired
-	protected UserFactory factory;
+	private UserFactory factory;
+
+	@Autowired
+	private RoleFactory roleFactory;
 
 	/**
 	 * 删除
@@ -126,10 +133,13 @@ public class UserApiImpl extends BaseApiImpl implements IUserApi {
 
 		UserObj obj = this.factory.getByIdNotNull(form.getId());
 
+		// view的时候，需要有用户和角色的信息
+		UserViewModel model = this.factory.getObj2ViewModelConverter().convert(obj);
+		model.updateUserRoles();
+
 		// 构建返回内容
 		UserViewResponse res = new UserViewResponse();
-		res.setInfo(this.factory.getObj2ViewModelConverter().convert(obj));
-
+		res.setInfo(model);
 		return res;
 	}
 
@@ -223,6 +233,19 @@ public class UserApiImpl extends BaseApiImpl implements IUserApi {
 		// 构建返回内容
 		UserViewResponse res = new UserViewResponse();
 		res.setInfo(this.factory.getObj2ViewModelConverter().convert(obj));
+
+		return res;
+	}
+
+	@Override
+	public UserRoleUpdateResponse changeUserRole(RoleAndUserIdForm form) throws BaseApiException {
+		UserObj user = this.factory.getByIdNotNull(form.getId());
+		RoleObj role = this.roleFactory.getByIdNotNull(form.getRoldId());
+		
+		user.changeRole(role);
+
+		UserRoleUpdateResponse res = new UserRoleUpdateResponse();
+		res.setUserRoles(user.getUserRoleInfoList());
 
 		return res;
 	}

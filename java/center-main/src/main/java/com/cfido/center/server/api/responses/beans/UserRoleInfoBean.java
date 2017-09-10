@@ -10,10 +10,13 @@ import com.cfido.commons.annotation.bean.AComment;
  * 
  * @author 梁韦江
  */
+@AComment("用户的角色")
 public class UserRoleInfoBean implements Comparable<UserRoleInfoBean> {
-	@AComment("角色信息")
+
+	@AComment("角色id")
 	private final int roleId;
-	@AComment("角色信息")
+
+	@AComment("角色名")
 	private final String roleName;
 
 	@AComment("是否在这个角色")
@@ -30,6 +33,14 @@ public class UserRoleInfoBean implements Comparable<UserRoleInfoBean> {
 
 	public void setInRole(boolean inRole) {
 		this.inRole = inRole;
+	}
+
+	public int getRoleId() {
+		return roleId;
+	}
+
+	public String getRoleName() {
+		return roleName;
 	}
 
 	@Override

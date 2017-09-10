@@ -5,9 +5,9 @@ import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.cfido.center.server.entity.Role;
 import com.cfido.commons.beans.apiServer.BaseApiException;
 import com.cfido.commons.utils.logicObj.BasePoObj;
-import com.cfido.center.server.entity.Role;
 
 /**
  * <pre>
@@ -29,5 +29,9 @@ public class RoleObj extends BasePoObj<Role> {
 	
 	public void update() throws BaseApiException {
 		this.factory.update(this, true);
+	}
+
+	public int getRoleId() {
+		return this.po.getId();
 	}
 }

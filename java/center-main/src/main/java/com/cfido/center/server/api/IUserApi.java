@@ -1,7 +1,9 @@
 package com.cfido.center.server.api;
 
 import com.cfido.center.server.api.responses.UserListResponse;
+import com.cfido.center.server.api.responses.UserRoleUpdateResponse;
 import com.cfido.center.server.api.responses.UserViewResponse;
+import com.cfido.center.server.form.RoleAndUserIdForm;
 import com.cfido.center.server.form.UserEditForm;
 import com.cfido.commons.annotation.api.AClass;
 import com.cfido.commons.annotation.api.AMethod;
@@ -40,4 +42,6 @@ public interface IUserApi {
 	@AMethod(comment = "封号或者解封")
 	UserViewResponse lockOrUnlock(IdForm form) throws BaseApiException;
 
+	@AMethod(comment = "改变用户的角色")
+	UserRoleUpdateResponse changeUserRole(RoleAndUserIdForm form) throws BaseApiException;
 }
